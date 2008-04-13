@@ -1,14 +1,20 @@
 #summary Some Examples of how to use pyTumblr
 #labels Phase-Implementation
 
-Introduction =
+Here a few short examples of how to implement pyTumblr
 
-Add your content here.
+= Adding a regular text note =
 
+{{{
+import tumblr
 
-= Details =
+email = "test@testing.com"
+password = "password"
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+cTumblr = tumblr.CTumblr(email,password)
+
+title = "Testing 1,2,3"
+text = "The next ground shaking thought."
+
+cTumblr.text(text, title)
+}}}
