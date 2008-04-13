@@ -3,6 +3,9 @@ import urllib
 writeurl = "http://www.tumblr.com/api/write"
 
 class CTumblr:
+    """
+    A class to allow Tumblr post submission from python programs
+    """
     init = 0
     
     def __init__(self, setemail, setpassword):
@@ -21,7 +24,8 @@ class CTumblr:
 
         # Fix: Add date function here
 
-        print datadict
+        # Debug, print the data sent.
+        # print datadict
 
         data = urllib.urlencode(datadict)
     
@@ -89,6 +93,36 @@ class CTumblr:
 
         self.send(data)
         return 0
+    
+    def photodata(self, filename, clickthru='',private=False, tags=''):
+        '''
+        Create a Tumblr photo post, where the photo is provided from a filename.
+        For photos located on the local machine, use the photodata function
+
+        photourl(url,[clicktrue='', private=False, tags=''])
+
+        The only required field is url, which is a web accessible url.
+
+        Optional Fields:
+            clickthru: An url that, when the picture is clicked, the visitor is directed to.
+                        DEFAULT: Empty string (no link)
+            private: If the post is designated as private then the post doesn't appear on the tumblog main page
+                     only on the dashboard and authorised links
+                     DEFAULT: False (post appears on main page)
+            tags: A comma seperated list of post tags
+                  DEFAULT: Empty string (no tags)
+        '''
+
+        # test post method (5M limit)
+        fin = open(filename)
+
+        # FIX: test to see if file is good
+        
+        filedata = "".join(fin.readlines())
+
+        data = {"type":"photo","data":filedata}
+
+        self.send(data)
 
     def videourl(self, url, caption='', private=False, tags=''):
         '''
