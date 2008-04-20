@@ -7,11 +7,18 @@ class CTumblr:
     A class to allow Tumblr post submission from python programs
     """
     init = 0
-    
-    def __init__(self, setemail, setpassword):
+    verbose = 0
+
+    def __init__(self, setemail, setpassword,verbose=0):
         self.email = setemail
         self.password = setpassword        
         self.init = 1
+	self.verbose = verbose
+
+    def msg(self,message):
+    	if self.verbose == 1:
+		print "MSG: ", message
+	
 
     def send(self,datadict):
         if self.init != 1:
@@ -25,12 +32,21 @@ class CTumblr:
         # Fix: Add date function here
 
         # Debug, print the data sent.
-        # print datadict
+        self.msg(" ".join(datadict.keys()))
+	self.msg(" ".join(datadict.values()))
 
         data = urllib.urlencode(datadict)
     
-        a= urllib.urlopen(writeurl, data)
-        print a.readlines()
+        try:
+		a = urllib.urlopen(writeurl, data)
+	except:
+		print "ERR: Unable to send data"
+
+	try:
+        	self.msg("Return from tumblr" + a.readlines())
+	except:
+		print "ERR: Unable to readback."
+
         return 0
 
     def quote(self,quote,source='',private=False,tags=''):
