@@ -98,7 +98,7 @@ class CTumblr:
         
         data = {"type":"photo","source":url}
 
-        if len(clicktrue) != 0:
+        if len(clickthru) != 0:
             data["click-thru-url"] = clickthru
 
         if len(tags) != 0:
