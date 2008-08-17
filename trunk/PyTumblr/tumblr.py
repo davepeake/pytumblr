@@ -77,16 +77,18 @@ class CTumblr:
         self.send(data)
         return 0
 
-    def photourl(self, url, clickthru='',private=False, tags=''):
+    def photourl(self, url, caption='',clickthru='',private=False, tags=''):
         '''
         Create a Tumblr photo post, where the photo is provided through a URL.
         For photos located on the local machine, use the photodata function
 
-        photourl(url,[clicktrue='', private=False, tags=''])
+        photourl(url,[caption='',clicktrue='', private=False, tags=''])
 
         The only required field is url, which is a web accessible url.
 
         Optional Fields:
+            caption: A string which is placed under the posted photo.
+                     DEFAULT: Empty string (no caption)
             clickthru: An url that, when the picture is clicked, the visitor is directed to.
                         DEFAULT: Empty string (no link)
             private: If the post is designated as private then the post doesn't appear on the tumblog main page
@@ -97,6 +99,8 @@ class CTumblr:
         '''
         
         data = {"type":"photo","source":url}
+        if len(caption) != 0:
+            data["caption"] = caption
 
         if len(clickthru) != 0:
             data["click-thru-url"] = clickthru
@@ -110,14 +114,14 @@ class CTumblr:
         self.send(data)
         return 0
     
-    def photodata(self, filename, clickthru='',private=False, tags=''):
+    def photodata(self, filename, caption='', clickthru='',private=False, tags=''):
         '''
-        Create a Tumblr photo post, where the photo is provided from a filename.
-        For photos located on the local machine, use the photodata function
+        Create a Tumblr photo post, where the photo is provided from a local filename.
+        For photos accessed using a URL, use the photourl function
 
-        photourl(url,[clicktrue='', private=False, tags=''])
+        photodata(filename,[clicktrue='', private=False, tags=''])
 
-        The only required field is url, which is a web accessible url.
+        The only required field is filename, which is a locally accessible filename.
 
         Optional Fields:
             clickthru: An url that, when the picture is clicked, the visitor is directed to.
@@ -132,11 +136,23 @@ class CTumblr:
         # test post method (5M limit)
         fin = open(filename)
 
-        # FIX: test to see if file is good
+        # TODO: test to see if file is good
         
         filedata = "".join(fin.readlines())
 
         data = {"type":"photo","data":filedata}
+
+        if len(caption) != 0:
+            data["caption"] = caption
+
+        if len(clickthru) != 0:
+            data["click-thru-url"] = clickthru
+
+        if len(tags) != 0:
+            data["tags"] = tags
+
+        if private:
+            data["private"] = 1
 
         self.send(data)
 
